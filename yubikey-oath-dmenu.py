@@ -169,7 +169,7 @@ def cli(ctx, clipboard, clipboard_cmd, menu_cmd, notify_enable, no_hidden, pinen
         if "WAYLAND_DISPLAY" in os.environ and shutil.which('wtype'):
             typeit_cmd = ['wtype']
         elif shutil.which('xdotool'):
-            typeit_cmd = ['xdotool', 'type']
+            typeit_cmd = ['xdotool', 'key']
         else:
             err_message('Error: wtype or xdotool binary not found')
             sys.exit(1)
@@ -246,7 +246,8 @@ def cli(ctx, clipboard, clipboard_cmd, menu_cmd, notify_enable, no_hidden, pinen
         touch_timer.cancel()
 
         if typeit_cmd:
-            subprocess.run(typeit_cmd + [code])
+            for c in code:
+                subprocess.run(typeit_cmd + ['KP_' + c])
 
         if clip_cmd:
             clip_proc = subprocess.Popen(
